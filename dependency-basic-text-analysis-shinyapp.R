@@ -1,0 +1,36 @@
+
+try(require(shiny) || install.packages("shiny"))
+try(require(text2vec) || install.packages("text2vec"))
+try(require(tm) || install.packages("tm"))
+try(require(tokenizers) || install.packages("tokenizers"))
+try(require(wordcloud) || install.packages("wordcloud"))
+try(require(slam) || install.packages("slam"))
+
+try(require(stringi) || install.packages("stringi"))
+try(require(magrittr) || install.packages("magrittr"))
+try(require(tidytext) || install.packages("tidytext"))
+try(require(dplyr) || install.packages("dplyr"))
+try(require(tidyr) || install.packages("tidyr"))
+try(require(igraph)|| install.packages("igraph"))
+try(require(visNetwork)|| install.packages('visNetwork'))
+
+library(shiny)
+library(text2vec)
+library(tm)
+library(tokenizers)
+library(wordcloud)
+library(slam)
+library(visNetwork)
+
+library(stringi)
+library(magrittr)
+library(tidytext)
+library(dplyr)
+library(tidyr)
+library(igraph)
+
+if (!require(shinyWidgets)) {install.packages("shinyWidgets")};  library(shinyWidgets)
+if (!require(stringr)) {install.packages("stringr")};  library(stringr)
+if (!require(DT)){install.packages('DT')}; library('DT')
+if (!require(quanteda)){install.packages('quanteda')}; library('quanteda')
+
