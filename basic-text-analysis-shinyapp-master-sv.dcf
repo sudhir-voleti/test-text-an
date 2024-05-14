@@ -1,0 +1,12 @@
+name: basic-text-analysis-shinyapp-master-sv
+title: basic-text-analysis-shinyapp-master-sv
+username: mlids
+account: mlids
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4681067
+bundleId: 8453197
+url: https://mlids.shinyapps.io/basic-text-analysis-shinyapp-master-sv/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
