@@ -17,6 +17,7 @@ library(tidyr)
 library(DT)
 library(stringr)
 library(tools)
+library(pdftools)
 
 shinyUI(fluidPage(
   title = "Basic Text Analysis",
@@ -24,15 +25,12 @@ shinyUI(fluidPage(
   
   # Input in sidepanel:
   sidebarPanel(
-    tags$head(HTML('<script type="text/jscript">document.addEventListener("contextmenu", event => event.preventDefault());</script>')),
-    fileInput("file", "Upload text file", accept=c(".txt",".csv")),
+    
+    fileInput("file", "Upload file: txt, csv or pdf"),
     uiOutput('id_var'),
     uiOutput("doc_var"),
     textInput("stopw", ("Enter stop words separated by comma(,)"), value = "will,can"),
     
-    # selectInput("ws", "Weighing Scheme", 
-    #             c("weightTf","weightTfIdf"), selected = "weightTf"), # weightTf, weightTfIdf, weightBin, and weightSMART.
-    #
     htmlOutput("pre_proc1"),
     htmlOutput("pre_proc2"),
     sliderInput("freq", "Minimum Frequency in Wordcloud:", min = 0,  max = 100, value = 2),
@@ -42,7 +40,7 @@ shinyUI(fluidPage(
     numericInput("nodes", "Number of Central Nodes in co-occurrence graph", 4),
     numericInput("connection", "Number of Max Connection with Central Node", 5),
 
-    textInput("wordl_t1", ("Enter keywords for Custom Co-Occurrence Graph:"), value = "customer, business, good, nokia, year, market"),
+    textInput("wordl_t1", ("Enter keywords for Custom Co-Occurrence Graph:"), value = "amazing, good, nokia, screen"),
 
     
     
@@ -73,12 +71,13 @@ shinyUI(fluidPage(
                          #, height = 280, width = 400
                          br(),
                          h4(p("Download Sample text file")),
-                         downloadButton('downloadData1', 'Download Nokia Lumia reviews txt file'),br(),br(),
-                         downloadButton('downloadData2', 'Download OnePlus reviews txt file'),br(),br(),
-                         downloadButton('downloadData3', 'Download Uber reviews csv file'),br(),br(),
-                         downloadButton('downloadData4', 'Download Game of Thrones reviews txt file'),br(),br(),
-                        # p("Please note that download will not work with RStudio interface. Download will work only in web-browsers. So open this app in a web-browser and then download the example file. For opening this app in web-browser click on \"Open in Browser\" as shown below -"),
-                        # img(src = "example1.png")
+                         downloadButton('downloadData1', 'Download Nokia Lumia reviews TXT file'),br(),br(),
+                         downloadButton('downloadData2', 'Download OnePlus reviews TXT file'),br(),br(),
+                         downloadButton('downloadData3', 'Download Uber reviews CSV file'),br(),br(),
+                         downloadButton('downloadData4', 'Download Game of Thrones reviews TXT file'),br(),br(),
+                         downloadButton('downloadData5', 'Download Amazon Q4-2023 earnings transcript PDF file'),br(),br(),
+                         p("Please note that download will not work with RStudio interface. Download will work only in web-browsers. So open this app in a web-browser and then download the example file. For opening this app in web-browser click on \"Open in Browser\" as shown below -"),
+                         img(src = "example1.png")
                 )
                 ,
                 tabPanel("Data Summary",
