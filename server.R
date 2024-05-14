@@ -39,6 +39,8 @@ if (!require(quanteda)){install.packages('quanteda')}; library('quanteda')
 
 options(shiny.maxRequestSize = 50*1024^2) 
 
+#               Basic Text Analysis             #
+
 shinyServer(function(input, output,session) {
   set.seed=2092014   
   
@@ -51,9 +53,28 @@ shinyServer(function(input, output,session) {
         #colnames(Document) <- c("Doc.id","Document")
         Doc.id=seq(1:length(Document))
         calib=data.frame(Doc.id,Document)
-        #print(input$file$name)
-        return(calib)}
-    else{
+        print(input$file$name)
+        return(calib)} else if(file_ext(input$file$datapath)=="pdf")
+      {          
+        pdf_text0 <- pdftools::pdf_text(input$file$datapath)                
+        pdf_text1 <- str_replace_all(pdf_text0, 
+                                     pattern = "([.!?])\n(\\w)", 
+                                     replacement = "\\1\n\n\\2") 
+  
+        # Collapse multiple repetitions of newline into a paragraph break
+        pdf_text1 <- gsub("\n{2,}", "\n\n", pdf_text1)
+        pdf_text1 <- gsub("\n\\s{2,}", " ", pdf_text1)
+  
+        # Combine text from all pages while preserving line breaks
+        pdf_text1 <- paste(pdf_text1, collapse = "\n\n")
+        pdf_text2 <- str_split(pdf_text1, pattern = "\n\n")
+        #Document = pdf_text2
+          Doc.id <- seq(1, length(pdf_text2[[1]]))
+          calib <- data.frame(Doc.id, pdf_text2)
+          colnames(calib) <- c("Doc.id","Documents")
+          print(input$file$name)
+          return(calib)} else
+      {
       Document = read.csv(input$file$datapath ,header=TRUE, sep = ",", stringsAsFactors = F)
       Document[,1] <- str_to_title(Document[,1])
       Document[,1] <- make.names(Document[,1], unique=TRUE)
@@ -90,7 +111,7 @@ shinyServer(function(input, output,session) {
     })
   
   output$id_var <- renderUI({
-   # print(cols())
+    print(cols())
     selectInput("x","Select ID Column",choices = cols())
   })
   
@@ -123,7 +144,7 @@ shinyServer(function(input, output,session) {
         HTML(paste(str2,str4, sep = '<br/>'))
     })
   output$samp_data <- DT::renderDataTable({
-    DT::datatable(head(dataset()),rownames = FALSE)
+    DT::datatable(dataset(),rownames = FALSE)
   })
   
   dtm_tcm =  eventReactive(input$apply,{
@@ -424,6 +445,12 @@ dtm_idf =  eventReactive(input$apply,{
     filename = function() { "GameOfThrones_reviews.txt" },
     content = function(file) {
       writeLines(readLines("data/Game of Thrones IMDB reviews.txt"), file)
+    }
+  )  
+output$downloadData5 <- downloadHandler(
+    filename = function() { "Amazon-Q4_2023_Transcript.pdf" },
+    content = function(file) {
+      writeLines(readLines("data/Amazon-Q4_2023_Transcript.pdf"), file)
     }
   )  
   
